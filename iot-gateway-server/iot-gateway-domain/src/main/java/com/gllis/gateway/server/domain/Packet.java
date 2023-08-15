@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Data
 @Builder
 public class Packet implements Serializable {
+
     private static final long serialVersionUID = 6619137478059504425L;
 
     // 协议号
@@ -27,5 +28,5 @@ public class Packet implements Serializable {
     // 协议类型
     private ProtocolEnum protocolEnum;
     // 报文
-    transient private byte[] body;
+    private byte[] body;
 }

@@ -39,7 +39,8 @@ public final class PacketDecoder extends ByteToMessageDecoder {
             ctx.close();
             return;
         }
-
+        // 重置读取下标
+        in.resetReaderIndex();
         byte[] body = new byte[dataLength];
         in.readBytes(body);
         if (totalLength > dataLength) {
