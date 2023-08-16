@@ -1,10 +1,13 @@
 package com.gllis.gateway.server.core.connection;
 
+import com.gllis.gateway.server.core.manager.MqProducerManager;
+import com.gllis.gateway.server.core.util.HexUtil;
 import com.gllis.gateway.server.enums.ConnStateEnum;
 import com.gllis.gateway.server.enums.DataFormatEnum;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
@@ -16,15 +19,21 @@ import java.net.InetSocketAddress;
  * @date 2023/8/15
  */
 @Slf4j
+@NoArgsConstructor
 public class NettyConnect implements Connection {
 
     private volatile ConnStateEnum state = ConnStateEnum.NEW;
     private Channel channel;
+    private MqProducerManager kafkaProducerManager;
 
     private long lastReadTime;
     private long lastWriteTime;
     private InetSocketAddress address;
     private String sn;
+
+    public NettyConnect(MqProducerManager kafkaProducerManager) {
+        this.kafkaProducerManager = kafkaProducerManager;
+    }
 
     @Override
     public void init(Channel channel, boolean security) {
@@ -40,6 +49,8 @@ public class NettyConnect implements Connection {
         }
         ByteBuf buf = Unpooled.copiedBuffer(data);
         this.channel.writeAndFlush(buf);
+        kafkaProducerManager.sendDevicePacketDownLog(getSn(), df == DataFormatEnum.ASCCII ?
+                new String(data) : HexUtil.convertByteToHex(data));
     }
 
     @Override

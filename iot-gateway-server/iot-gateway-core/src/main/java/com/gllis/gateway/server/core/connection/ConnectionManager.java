@@ -14,4 +14,6 @@ public interface ConnectionManager {
     void add(Connection connection);
 
     Connection get(Channel channel);
+
+    Connection get(String sn);
 }

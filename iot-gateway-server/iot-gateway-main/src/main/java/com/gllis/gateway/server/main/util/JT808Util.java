@@ -1,6 +1,5 @@
 package com.gllis.gateway.server.main.util;
 
-import com.gllis.gateway.server.core.util.HexUtil;
 import com.gllis.gateway.server.domain.Packet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -38,6 +37,7 @@ public class JT808Util {
 
         byte[] resp = new byte[buf.readableBytes()];
         buf.readBytes(resp);
+        buf.release();
         resp = escaped(resp);
         return resp;
     }
@@ -62,7 +62,7 @@ public class JT808Util {
      *
      * @param data
      */
-    private static byte[] escaped(byte[] data) {
+    public static byte[] escaped(byte[] data) {
         List<Byte> bytes = new ArrayList<>();
         bytes.add((byte) 0x7E);
         for (byte tmp : data) {

@@ -3,6 +3,7 @@ package com.gllis.gateway.server.handler;
 import com.gllis.gateway.server.core.connection.Connection;
 import com.gllis.gateway.server.core.connection.ConnectionManager;
 import com.gllis.gateway.server.core.connection.NettyConnect;
+import com.gllis.gateway.server.core.manager.MqProducerManager;
 import com.gllis.gateway.server.core.message.PacketReceiver;
 import com.gllis.gateway.server.core.util.ParsePacketUtil;
 import com.gllis.gateway.server.domain.Packet;
@@ -34,6 +35,9 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     private ConnectionManager connectionManager;
 
     @Autowired
+    private MqProducerManager kafkaProducerManager;
+
+    @Autowired
     private PacketReceiver receiver;
 
 
@@ -42,7 +46,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
         if (log.isDebugEnabled()) {
             log.debug("client connected conn = {}", ctx.channel());
         }
-        Connection connection = new NettyConnect();
+        Connection connection = new NettyConnect(kafkaProducerManager);
         connection.init(ctx.channel(), false);
         connectionManager.add(connection);
     }

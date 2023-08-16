@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Handler(protocol = ProtocolEnum.JT808, cmdType = JT808Cmd.HEARTBEAT)
-public class HeartbeatProtocol extends BaseProtocolProcessing {
+public class JT808HeartbeatProtocol extends BaseProtocolProcessing {
 
     @Override
     public void handler(Packet packet, Connection connection) {
