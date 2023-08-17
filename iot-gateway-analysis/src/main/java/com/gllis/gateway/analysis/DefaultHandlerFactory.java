@@ -1,38 +1,40 @@
-package com.gllis.gateway.server.core.factory;
+package com.gllis.gateway.analysis;
 
-
-import com.gllis.gateway.server.core.handler.ProtocolProcessing;
-import com.gllis.gateway.server.util.AnnotationParser;
 import com.gllis.gateway.server.domain.Packet;
 import com.gllis.gateway.server.enums.ProtocolEnum;
 import com.gllis.gateway.server.exception.ServiceException;
-
+import com.gllis.gateway.server.util.AnnotationParser;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 消息处理工厂
- *
  * @author glli
- * @date 2023/8/15
+ * date 2023/8/17
  */
 @Slf4j
 @Component
-public class HandlerFactory {
+public class DefaultHandlerFactory implements HandlerFactory, ApplicationContextAware, DisposableBean {
+
+    private ApplicationContext applicationContext;
 
     private static final String HANDLER_KEY = "{0}-{1}";
 
-    private static Map<String, ProtocolProcessing> handlerMap = new ConcurrentHashMap<>();
+    private static final Map<String, ProtocolProcessing> HANDLER_MAP = new HashMap<>();
 
-    public void init(ApplicationContext ctx) {
+    @PostConstruct
+    public void initFactory() {
         // 获取所有的处理实现类
-        Map<String, ProtocolProcessing> beansMap = ctx.getBeansOfType(ProtocolProcessing.class);
+        Map<String, ProtocolProcessing> beansMap = applicationContext.getBeansOfType(ProtocolProcessing.class);
         if (beansMap == null || beansMap.isEmpty()) {
             log.error("找不到处理实现类");
             throw new ServiceException("找不到处理实现类");
@@ -60,20 +62,23 @@ public class HandlerFactory {
                 continue;
             }
             for (String cmdType : cmdTypes) {
-                handlerMap.put(MessageFormat.format(HANDLER_KEY, pType.value, cmdType), handler);
+                HANDLER_MAP.put(MessageFormat.format(HANDLER_KEY, pType.value, cmdType), handler);
             }
-
         }
     }
 
-
-    /**
-     * 获取对应协议的Handler
-     *
-     * @param packet
-     * @return
-     */
+    @Override
     public ProtocolProcessing getHandler(Packet packet) {
-        return handlerMap.get(MessageFormat.format(HANDLER_KEY, packet.getProtocolEnum().value, packet.getCmd()));
+        return HANDLER_MAP.get(MessageFormat.format(HANDLER_KEY, packet.getProtocolEnum().value, packet.getCmd()));
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        this.applicationContext = null;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

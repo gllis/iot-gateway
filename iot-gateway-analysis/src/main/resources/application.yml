@@ -1,0 +1,21 @@
+spring:
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092,127.0.0.1:9091,127.0.0.1:9090
+    producer:
+      acks: 1
+      retries: 3
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.gllis.gateway.server.serialization.ProtostuffSerializer
+    consumer:
+      auto-offset-reset: latest
+      enable-auto-commit: true
+      auto-commit-interval: 1000
+      heartbeat-interval: 1000
+      max-poll-records: 1000
+      fetch-max-wait: 30000
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: com.gllis.gateway.server.serialization.ProtostuffDeserializer
+    listener:
+      ack-mode: RECORD

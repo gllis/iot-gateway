@@ -1,7 +1,7 @@
 package com.gllis.gateway.server.core.connection;
 
 import com.gllis.gateway.server.core.manager.MqProducerManager;
-import com.gllis.gateway.server.core.util.HexUtil;
+import com.gllis.gateway.server.util.HexUtil;
 import com.gllis.gateway.server.enums.ConnStateEnum;
 import com.gllis.gateway.server.enums.DataFormatEnum;
 import io.netty.buffer.ByteBuf;

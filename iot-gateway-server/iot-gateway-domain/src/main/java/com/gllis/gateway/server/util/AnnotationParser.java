@@ -1,4 +1,4 @@
-package com.gllis.gateway.server.core.util;
+package com.gllis.gateway.server.util;
 
 import com.gllis.gateway.server.annotation.Handler;
 import com.gllis.gateway.server.enums.ProtocolEnum;

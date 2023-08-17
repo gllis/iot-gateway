@@ -3,7 +3,7 @@ package com.gllis.gateway.server.main.handler.jt808.cmd;
 import com.gllis.gateway.server.annotation.SendCmdHandler;
 import com.gllis.gateway.server.core.connection.Connection;
 import com.gllis.gateway.server.core.handler.CommandProcessing;
-import com.gllis.gateway.server.core.util.HexUtil;
+import com.gllis.gateway.server.util.HexUtil;
 import com.gllis.gateway.server.domain.Command;
 import com.gllis.gateway.server.enums.DataFormatEnum;
 import com.gllis.gateway.server.enums.ProtocolEnum;

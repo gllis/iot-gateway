@@ -4,6 +4,7 @@ import com.gllis.gateway.server.core.connection.Connection;
 import com.gllis.gateway.server.core.connection.ConnectionManager;
 import com.gllis.gateway.server.domain.Packet;
 import com.gllis.gateway.server.enums.ProtocolEnum;
+import com.gllis.gateway.server.util.HexUtil;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.ArrayUtils;
