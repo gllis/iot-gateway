@@ -19,3 +19,12 @@ spring:
       value-deserializer: com.gllis.gateway.server.serialization.ProtostuffDeserializer
     listener:
       ack-mode: RECORD
+
+
+iot:
+  mq:
+    consumer:
+      topic-packet: iot.packet
+      group-id: iot
+    producer:
+      topic-outPacket: iot.outPacket

@@ -4,7 +4,6 @@ import com.gllis.gateway.analysis.ProtocolProcessing;
 import com.gllis.gateway.analysis.manager.MqProducerManager;
 import com.gllis.gateway.server.annotation.Handler;
 import com.gllis.gateway.server.constant.JT808Cmd;
-import com.gllis.gateway.server.domain.OutBasePacket;
 import com.gllis.gateway.server.domain.Packet;
 import com.gllis.gateway.server.domain.PositionPacket;
 import com.gllis.gateway.server.enums.ProtocolEnum;

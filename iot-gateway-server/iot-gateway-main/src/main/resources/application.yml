@@ -30,3 +30,12 @@ spring:
     listener:
       ack-mode: RECORD
 
+
+
+iot:
+  command:
+    add: iot.command-add
+    remove: iot.command-remove
+  mq:
+    topic-packet: iot.packet
+    topic-deviceLog: iot.deviceLog

@@ -5,27 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.gllis</groupId>
-        <artifactId>iot-gateway</artifactId>
+        <artifactId>iot-gateway-server</artifactId>
         <version>1.0</version>
+        <relativePath>pom.xml</relativePath>
     </parent>
 
-    <artifactId>iot-gateway-server</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>iot-gateway-core</module>
-        <module>iot-gateway-main</module>
-        <module>iot-gateway-domain</module>
-        <module>iot-gateway-tcp</module>
-        <module>iot-gateway-udp</module>
-    </modules>
+    <artifactId>iot-gateway-udp</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <iot.gateway.server.version>1.0</iot.gateway.server.version>
     </properties>
-
 
 </project>

@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Component
 public class MqProducerManager {
 
-    @Value("{iot.outPacket.topic:iot.outPacket}")
+    @Value("${iot.mq.producer.topic-outPacket}")
     private String iotOutPacket;
     @Autowired
     private KafkaTemplate<String, Serializable> kafkaTemplate;

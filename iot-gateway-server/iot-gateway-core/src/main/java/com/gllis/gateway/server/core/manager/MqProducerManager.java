@@ -3,6 +3,7 @@ package com.gllis.gateway.server.core.manager;
 import com.gllis.gateway.server.core.constant.SysConstant;
 import com.gllis.gateway.server.core.util.NetworkUtil;
 import com.gllis.gateway.server.domain.DeviceLog;
+import com.gllis.gateway.server.domain.Packet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,8 +21,11 @@ import java.io.Serializable;
 @Component
 public class MqProducerManager {
 
-    @Value("{iot.deviceLog.topic:iot.device.log}")
+    @Value("${iot.mq.topic-deviceLog}")
     private String iotDeviceLogTopic;
+    @Value("${iot.mq.topic-packet}")
+    private String iotPacketTopic;
+
     @Autowired
     private KafkaTemplate<String, Serializable> kafkaTemplate;
 
@@ -47,5 +51,15 @@ public class MqProducerManager {
         kafkaTemplate.send(iotDeviceLogTopic, sn, deviceLog);
     }
 
-
+    /**
+     * 转发报文解析
+     *
+     * @param packet
+     */
+    public void sendPacket(Packet packet) {
+        if (packet.getSn() == null) {
+            return;
+        }
+        kafkaTemplate.send(iotPacketTopic, packet.getSn(), packet);
+    }
 }

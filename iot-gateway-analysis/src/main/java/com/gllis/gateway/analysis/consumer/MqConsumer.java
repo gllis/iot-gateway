@@ -22,7 +22,7 @@ public class MqConsumer {
     @Autowired
     private HandlerFactory handlerFactory;
 
-    @KafkaListener
+    @KafkaListener(topics = "${iot.mq.consumer.topic-packet}", groupId = "${iot.mq.consumer.group-id}")
     public void onMessage(ConsumerRecord<String, Packet> record) {
         try {
             Packet packet = record.value();
