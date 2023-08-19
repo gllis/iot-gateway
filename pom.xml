@@ -16,7 +16,6 @@
     <modules>
         <module>iot-gateway-server</module>
         <module>iot-gateway-analysis</module>
-        <module>iot-gateway-server/iot-gateway-udp</module>
     </modules>
 
     <properties>

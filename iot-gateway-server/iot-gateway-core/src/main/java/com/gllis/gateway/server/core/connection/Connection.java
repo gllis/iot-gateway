@@ -2,7 +2,8 @@ package com.gllis.gateway.server.core.connection;
 
 import com.gllis.gateway.server.enums.DataFormatEnum;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelId;
+
+import java.net.InetSocketAddress;
 
 /**
  * 连接器接口
@@ -16,5 +17,6 @@ public interface Connection {
     String getSn();
     void setSn(String sn);
     void close();
+    void setAddress(InetSocketAddress address);
     void writeAndFlush(byte[] data, DataFormatEnum df);
 }

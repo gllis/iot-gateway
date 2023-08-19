@@ -1,7 +1,6 @@
 package com.gllis.gateway.server.core.util;
 
 import com.gllis.gateway.server.core.connection.Connection;
-import com.gllis.gateway.server.core.connection.ConnectionManager;
 import com.gllis.gateway.server.domain.Packet;
 import com.gllis.gateway.server.enums.ProtocolEnum;
 import com.gllis.gateway.server.util.HexUtil;
@@ -23,14 +22,13 @@ public class ParsePacketUtil {
      *
      * @param packet
      * @param ctx
-     * @param connectionManager
+     * @param connection
      */
-    public static void parsePacket(Packet packet, ChannelHandlerContext ctx, ConnectionManager connectionManager) {
-        byte[] data = packet.getBody();
-        Connection connection = connectionManager.get(ctx.channel());
+    public static void parsePacket(Packet packet, ChannelHandlerContext ctx, Connection connection) {
         if (connection == null) {
             return;
         }
+        byte[] data = packet.getBody();
         String sn = connection.getSn();
 
         // jt808

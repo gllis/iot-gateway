@@ -1,12 +1,13 @@
 package com.gllis.gateway.server.core.connection;
 
 import com.gllis.gateway.server.core.manager.MqProducerManager;
-import com.gllis.gateway.server.util.HexUtil;
 import com.gllis.gateway.server.enums.ConnStateEnum;
 import com.gllis.gateway.server.enums.DataFormatEnum;
+import com.gllis.gateway.server.util.HexUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.socket.DatagramPacket;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,7 @@ public class NettyConnect implements Connection {
 
     private volatile ConnStateEnum state = ConnStateEnum.NEW;
     private Channel channel;
-    private MqProducerManager kafkaProducerManager;
+    private MqProducerManager mqProducerManager;
 
     private long lastReadTime;
     private long lastWriteTime;
@@ -32,7 +33,7 @@ public class NettyConnect implements Connection {
     private String sn;
 
     public NettyConnect(MqProducerManager kafkaProducerManager) {
-        this.kafkaProducerManager = kafkaProducerManager;
+        this.mqProducerManager = kafkaProducerManager;
     }
 
     @Override
@@ -48,8 +49,14 @@ public class NettyConnect implements Connection {
             df = DataFormatEnum.HEX;
         }
         ByteBuf buf = Unpooled.copiedBuffer(data);
-        this.channel.writeAndFlush(buf);
-        kafkaProducerManager.sendDevicePacketDownLog(getSn(), df == DataFormatEnum.ASCCII ?
+        if (address != null) {
+            DatagramPacket datagramPacket = new DatagramPacket(buf, address);
+            this.channel.writeAndFlush(datagramPacket);
+        } else {
+            this.channel.writeAndFlush(buf);
+        }
+
+        mqProducerManager.sendDevicePacketDownLog(getSn(), df == DataFormatEnum.ASCCII ?
                 new String(data) : HexUtil.convertByteToHex(data));
     }
 
@@ -66,6 +73,11 @@ public class NettyConnect implements Connection {
     @Override
     public void setSn(String sn) {
         this.sn = sn;
+    }
+
+    @Override
+    public void setAddress(InetSocketAddress address) {
+        this.address = address;
     }
 
     @Override
