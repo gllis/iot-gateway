@@ -17,4 +17,19 @@ public enum ProtocolEnum {
         this.value = value;
         this.desc = desc;
     }
+
+    /**
+     * 获取协议
+     *
+     * @param value
+     * @return
+     */
+    public static ProtocolEnum get(String value) {
+        for (ProtocolEnum protocolEnum : ProtocolEnum.values()) {
+            if (protocolEnum.value.equals(value)) {
+                return protocolEnum;
+            }
+        }
+        return null;
+    }
 }

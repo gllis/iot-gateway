@@ -40,6 +40,9 @@ public class UdpChannelHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private MqProducerManager mqProducerManager;
 
+    @Autowired
+    private ParsePacketUtil parsePacketUtil;
+
     public UdpChannelHandler(PacketReceiver receiver) {
         this.receiver = receiver;
     }
@@ -74,7 +77,7 @@ public class UdpChannelHandler extends ChannelInboundHandlerAdapter {
             Connection connection = connectionManager.get(ctx.channel());
             connection.setAddress(datagramPacket.sender());
             Packet packet = Packet.builder().body(body).build();
-            ParsePacketUtil.parsePacket(packet, ctx, connection);
+            parsePacketUtil.parsePacket(packet, ctx, connection);
             receiver.onReceive(packet, connection);
         } catch (Exception e) {
             e.printStackTrace();

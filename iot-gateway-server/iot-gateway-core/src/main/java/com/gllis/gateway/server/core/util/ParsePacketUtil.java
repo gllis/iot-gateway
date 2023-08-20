@@ -1,12 +1,16 @@
 package com.gllis.gateway.server.core.util;
 
 import com.gllis.gateway.server.core.connection.Connection;
+import com.gllis.gateway.server.core.manager.SnModelManager;
 import com.gllis.gateway.server.domain.Packet;
+import com.gllis.gateway.server.domain.SnModel;
 import com.gllis.gateway.server.enums.ProtocolEnum;
 import com.gllis.gateway.server.util.HexUtil;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +19,11 @@ import java.util.List;
  * 解析工具类
  */
 @Slf4j
+@Component
 public class ParsePacketUtil {
 
+    @Autowired
+    private SnModelManager snModelManager;
     /**
      * 解析报文
      *
@@ -24,7 +31,7 @@ public class ParsePacketUtil {
      * @param ctx
      * @param connection
      */
-    public static void parsePacket(Packet packet, ChannelHandlerContext ctx, Connection connection) {
+    public void parsePacket(Packet packet, ChannelHandlerContext ctx, Connection connection) {
         if (connection == null) {
             return;
         }
@@ -45,6 +52,12 @@ public class ParsePacketUtil {
             ctx.close();
             return;
         }
+        SnModel snModel = snModelManager.get(sn);
+        if (snModel != null) {
+            packet.setModel(snModel.getModel());
+            packet.setDeviceId(snModel.getDeviceId());
+            packet.setProtocolEnum(ProtocolEnum.get(snModel.getProtocol()));
+        }
         connection.setSn(sn);
 
     }
@@ -54,7 +67,7 @@ public class ParsePacketUtil {
      *
      * @param data
      */
-    private static byte[] jt808Escaped(byte[] data) {
+    private byte[] jt808Escaped(byte[] data) {
         List<Byte> bytes = new ArrayList<>();
         for (int i = 0; i < data.length; i++) {
             if (data[i] == 0x7D && data[i+1] == 0x02) {

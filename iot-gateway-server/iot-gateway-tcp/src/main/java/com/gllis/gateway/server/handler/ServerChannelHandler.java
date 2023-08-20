@@ -40,6 +40,9 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private PacketReceiver receiver;
 
+    @Autowired
+    private ParsePacketUtil parsePacketUtil;
+
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -69,7 +72,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
                 return;
             }
             Connection connection = connectionManager.get(ctx.channel());
-            ParsePacketUtil.parsePacket(packet, ctx, connection);
+            parsePacketUtil.parsePacket(packet, ctx, connection);
             receiver.onReceive(packet, connection);
         } catch (Exception e) {
             e.printStackTrace();
