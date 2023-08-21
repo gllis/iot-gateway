@@ -16,6 +16,7 @@
     <modules>
         <module>iot-gateway-server</module>
         <module>iot-gateway-analysis</module>
+        <module>iot-gateway-log</module>
     </modules>
 
     <properties>
@@ -32,6 +33,7 @@
         <commons-lang.version>2.6</commons-lang.version>
         <fastjson2.version>2.0.39</fastjson2.version>
         <protostuff.version>1.8.0</protostuff.version>
+        <influxdb.version>6.10.0</influxdb.version>
     </properties>
 
     <dependencyManagement>
@@ -90,6 +92,11 @@
                 <groupId>io.protostuff</groupId>
                 <artifactId>protostuff-runtime</artifactId>
                 <version>${protostuff.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.influxdb</groupId>
+                <artifactId>influxdb-client-java</artifactId>
+                <version>${influxdb.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
