@@ -16,6 +16,7 @@ public interface Connection {
     Channel getChannel();
     String getSn();
     void setSn(String sn);
+    void setTopic(String topic);
     void close();
     void setAddress(InetSocketAddress address);
     void writeAndFlush(byte[] data, DataFormatEnum df);

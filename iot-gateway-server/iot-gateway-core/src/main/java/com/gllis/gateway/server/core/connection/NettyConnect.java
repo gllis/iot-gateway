@@ -31,6 +31,7 @@ public class NettyConnect implements Connection {
     private long lastWriteTime;
     private InetSocketAddress address;
     private String sn;
+    private String topic;
 
     public NettyConnect(MqProducerManager kafkaProducerManager) {
         this.mqProducerManager = kafkaProducerManager;
@@ -73,6 +74,11 @@ public class NettyConnect implements Connection {
     @Override
     public void setSn(String sn) {
         this.sn = sn;
+    }
+
+    @Override
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     @Override
