@@ -59,9 +59,10 @@ public final class BootChain {
         return this;
     }
 
-    public BootChain setNext(Supplier<BootJob> next, boolean enabled) {
+
+    public BootChain setNext(BootJob bootJob, boolean enabled) {
         if (enabled) {
-            return setNext(next.get());
+            this.last = last.setNext(bootJob);
         }
         return this;
     }

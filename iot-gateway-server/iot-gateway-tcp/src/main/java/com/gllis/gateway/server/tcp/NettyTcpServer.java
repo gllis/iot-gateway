@@ -78,7 +78,6 @@ public class NettyTcpServer extends BaseServiceImpl {
         } else {
             createNioServer(listener);
         }
-        super.start(listener);
     }
 
     @Override
@@ -98,7 +97,7 @@ public class NettyTcpServer extends BaseServiceImpl {
             workerGroup.shutdownGracefully().syncUninterruptibly();
         }
         log.info("{} shutdown success.", this.getClass().getSimpleName());
-        super.stop(listener);
+        listener.onSuccess(nettyTcpConf.getPort());
     }
 
     private void createNioServer(Listener listener) {

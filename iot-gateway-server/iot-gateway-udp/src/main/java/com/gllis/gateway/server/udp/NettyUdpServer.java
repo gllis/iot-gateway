@@ -70,7 +70,6 @@ public class NettyUdpServer extends BaseServiceImpl {
         } else {
             createNioServer(listener);
         }
-        super.start(listener);
     }
 
     @Override
@@ -87,7 +86,7 @@ public class NettyUdpServer extends BaseServiceImpl {
             eventLoopGroup.shutdownGracefully().syncUninterruptibly();
         }
         log.info("{} shutdown success.", this.getClass().getSimpleName());
-        super.stop(listener);
+        listener.onSuccess(nettyUdpConf.getPort());
     }
 
     private void createNioServer(Listener listener) {

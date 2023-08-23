@@ -24,6 +24,9 @@ import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.net.InetSocketAddress;
@@ -38,6 +41,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * @date 2023/8/22
  */
 @Slf4j
+@Component
+@Configuration
+@EnableConfigurationProperties(NettyMqttConf.class)
 public class NettyMqttServer extends BaseServiceImpl {
     @Autowired
     private NettyMqttConf nettyMqttConf;
@@ -71,7 +77,6 @@ public class NettyMqttServer extends BaseServiceImpl {
         } else {
             createNioServer(listener);
         }
-        super.start(listener);
     }
 
     @Override
@@ -91,7 +96,7 @@ public class NettyMqttServer extends BaseServiceImpl {
             workerGroup.shutdownGracefully().syncUninterruptibly();
         }
         log.info("{} shutdown success.", this.getClass().getSimpleName());
-        super.stop(listener);
+        listener.onSuccess(nettyMqttConf.getPort());
     }
 
     private void createNioServer(Listener listener) {

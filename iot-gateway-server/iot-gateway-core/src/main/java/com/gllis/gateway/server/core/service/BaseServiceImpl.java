@@ -4,6 +4,7 @@ package com.gllis.gateway.server.core.service;
 import com.gllis.gateway.server.core.listener.FutureListener;
 import com.gllis.gateway.server.core.listener.Listener;
 import com.gllis.gateway.server.exception.ServiceException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author glli
  * @date 2023/8/15
  */
+@Slf4j
 public abstract class BaseServiceImpl implements BaseService {
 
     protected final AtomicBoolean started = new AtomicBoolean();
@@ -22,6 +24,7 @@ public abstract class BaseServiceImpl implements BaseService {
         FutureListener listener = wrap(l);
         if (started.compareAndSet(false, true)) {
             try {
+                log.warn("func:{}, listener:{}", func, listener);
                 func.apply(listener);
             } catch (Throwable e) {
                 listener.onFailure(e);
@@ -54,27 +57,23 @@ public abstract class BaseServiceImpl implements BaseService {
         }
     }
 
-    @Override
-    public CompletableFuture<Boolean> start() {
+    public final CompletableFuture<Boolean> start() {
         FutureListener listener = new FutureListener(started);
         start(listener);
         return listener;
     }
 
-    @Override
-    public CompletableFuture<Boolean> stop() {
+    public final CompletableFuture<Boolean> stop() {
         FutureListener listener = new FutureListener(started);
         stop(listener);
         return listener;
     }
 
-    @Override
-    public boolean syncStart() {
+    public final boolean syncStart() {
         return start().join();
     }
 
-    @Override
-    public boolean syncStop() {
+    public final boolean syncStop() {
         return stop().join();
     }
 

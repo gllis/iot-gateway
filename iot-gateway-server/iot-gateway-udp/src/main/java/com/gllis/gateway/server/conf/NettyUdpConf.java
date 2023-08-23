@@ -19,4 +19,5 @@ public class NettyUdpConf {
     private boolean epollEnabled = false;
     private Integer timeout = 6;
     private Integer threadNum = 8;
+    private boolean enabled = true;
 }

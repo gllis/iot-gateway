@@ -18,11 +18,12 @@ public final class ServerBoot extends BootJob {
 
     @Override
     protected void start() {
+        log.error("service:{}", service);
         service.init();
         service.start(new Listener() {
             @Override
             public void onSuccess(Object... args) {
-                log.debug("start {} success on:{}", service.getClass().getSimpleName(), args);
+                log.info("start {} success on:{}", service.getClass().getSimpleName(), args);
                 startNext();
             }
 
@@ -40,5 +41,10 @@ public final class ServerBoot extends BootJob {
         log.info("try shutdown {}...", service.getClass().getSimpleName());
         service.stop().join();
         log.info("{} shutdown success.", service.getClass().getSimpleName());
+    }
+
+    @Override
+    protected String getName() {
+        return super.getName() + '(' + service.getClass().getSimpleName() + ')';
     }
 }
