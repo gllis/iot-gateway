@@ -4,8 +4,10 @@ import com.gllis.gateway.analysis.ProtocolProcessing;
 import com.gllis.gateway.analysis.manager.MqProducerManager;
 import com.gllis.gateway.server.annotation.Handler;
 import com.gllis.gateway.server.constant.JT808Cmd;
+import com.gllis.gateway.server.domain.Alarm;
 import com.gllis.gateway.server.domain.Packet;
 import com.gllis.gateway.server.domain.PositionPacket;
+import com.gllis.gateway.server.domain.Status;
 import com.gllis.gateway.server.enums.ProtocolEnum;
 import com.gllis.gateway.server.util.HexUtil;
 import io.netty.buffer.ByteBuf;
@@ -43,9 +45,35 @@ public class JT808PositionProtocol implements ProtocolProcessing {
         outBasePacket.setLon((buf.readInt()) / 1000000.0);
         outBasePacket.setAltitude(buf.readShort());
         outBasePacket.setSpeed(buf.readShort());
+        outBasePacket.setAlarm(parseAlarm(alarm));
+        outBasePacket.setStatus(parseStatus(status));
         buf.release();
 
         mqProducerManager.sendOutPacket(outBasePacket);
     }
 
+    /**
+     * 解析报警
+     *
+     * @param alarmBytes
+     */
+    private Alarm parseAlarm(byte[] alarmBytes) {
+        Alarm alarm = new Alarm();
+        alarm.setLowPower((alarmBytes[3] & 0B10000000) == 0B10000000 ? 1 : 0);
+        alarm.setPowerOff((alarmBytes[2] & 0B00000001) == 0B00000001 ? 1 : 0);
+        return alarm;
+    }
+
+    /**
+     * 解析状态
+     *
+     * @param statusBytes
+     * @return
+     */
+    private Status parseStatus(byte[] statusBytes) {
+        Status status = new Status();
+        status.setAcc((statusBytes[3] & 0B00000001) == 0B00000001 ? 1 : 0);
+        status.setGps((statusBytes[3] & 0B00000010) == 0B00000010 ? 1 : 0);
+        return status;
+    }
 }
