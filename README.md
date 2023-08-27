@@ -9,6 +9,7 @@
 * iot-gateway-mqtt
 * iot-gateway-tcp
 * iot-gateway-udp
+* iot-gateway-lwm2m
 
 
 

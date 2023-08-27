@@ -5,29 +5,32 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.gllis</groupId>
-        <artifactId>iot-gateway</artifactId>
+        <artifactId>iot-gateway-server</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>iot-gateway-server</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>iot-gateway-core</module>
-        <module>iot-gateway-main</module>
-        <module>iot-gateway-domain</module>
-        <module>iot-gateway-tcp</module>
-        <module>iot-gateway-udp</module>
-        <module>iot-gateway-mqtt</module>
-        <module>iot-gateway-lwm2m</module>
-    </modules>
+    <artifactId>iot-gateway-lwm2m</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <iot.gateway.server.version>1.0</iot.gateway.server.version>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.gllis</groupId>
+            <artifactId>iot-gateway-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.leshan</groupId>
+            <artifactId>leshan-server-cf</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
