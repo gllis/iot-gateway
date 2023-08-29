@@ -1,6 +1,7 @@
-package com.gllis.gateway.analysis.handle.jt808;
+package com.gllis.gateway.analysis.handler.jt808;
 
 import com.gllis.gateway.analysis.ProtocolProcessing;
+import com.gllis.gateway.analysis.handler.BaseHandler;
 import com.gllis.gateway.analysis.manager.MqProducerManager;
 import com.gllis.gateway.server.annotation.Handler;
 import com.gllis.gateway.server.constant.JT808Cmd;
@@ -24,13 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 2023/8/17
  */
 @Handler(protocol = ProtocolEnum.JT808, cmdType = JT808Cmd.POSITION)
-public class JT808PositionProtocol implements ProtocolProcessing {
-
-    @Autowired
-    private MqProducerManager mqProducerManager;
+public class JT808PositionProtocol extends BaseHandler {
 
     @Override
     public void handler(Packet packet) {
+        super.handler(packet);
         PositionPacket outBasePacket = new PositionPacket();
         BeanUtils.copyProperties(packet, outBasePacket);
         // 去掉包头

@@ -11,8 +11,5 @@ public interface SysConstant {
     int PACKET_SIZE_INVALID = -1;
     Byte COMMAND_SEND_NUMBER = 3;
 
-    // 设备上行
-    int DEVICE_LOG_PACKET_UP = 1;
-    // 设备下行
-    int DEVICE_LOG_PACKET_DOWN = 2;
+
 }

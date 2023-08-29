@@ -16,12 +16,12 @@ import java.util.Date;
 @NoArgsConstructor
 public class DeviceLog implements Serializable {
     private String sn;
-    private int type;    // 1:设备上传; 2：网关下传
+    private String type;    // 1:设备上传; 2：网关下传
     private String msg;
     private String hosts;
     private Date createTime;
 
-    public DeviceLog(String sn, int type, String msg, String hosts) {
+    public DeviceLog(String sn, String type, String msg, String hosts) {
         this.sn = sn;
         this.type = type;
         this.msg = msg;
